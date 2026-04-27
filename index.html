@@ -82,35 +82,6 @@
       line-height: 1.5;
     }
 
-    .guide-box {
-      margin: 0 0 14px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid #bfdbfe;
-      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
-      color: #1e3a8a;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .guide-title {
-      font-weight: 900;
-      font-size: 16px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .guide-box ol {
-      margin: 6px 0 0 22px;
-      padding: 0;
-    }
-
-    .guide-box li {
-      margin: 3px 0;
-    }
-
     .field { margin: 12px 0; }
 
     label {
@@ -653,17 +624,6 @@
       <div class="panel-body">
         <p class="sub">填寫資料後會即時產生右側 A4 一頁預覽。</p>
 
-        <div class="guide-box">
-          <div class="guide-title">📌 填單說明</div>
-          <ol>
-            <li>確認編號是否正確；編號會自動產生，可按「下一號」遞增。</li>
-            <li>勾選申請單位，填入負責教師、依據文號、年級、班級、學生姓名與座號。</li>
-            <li>選擇公假開始與結束日期時間，並填寫事由。</li>
-            <li>確認右側預覽無誤後，先按「送出資料到試算表」完成登錄。</li>
-            <li>需要紙本時，可按「直接列印」、「下載為 PDF」或「下載為 Word」。</li>
-          </ol>
-        </div>
-
         <div class="field">
           <label for="serial">編號（自動產生）</label>
           <input id="serial" readonly />
@@ -673,14 +633,21 @@
           </div>
         </div>
 
-        <div class="field">
-          <label>單位</label>
-          <div class="units">
-            <label class="unit-option"><input type="checkbox" name="unit" value="教務主任">教務主任</label>
-            <label class="unit-option"><input type="checkbox" name="unit" value="教學組">教學組</label>
-            <label class="unit-option"><input type="checkbox" name="unit" value="註冊組">註冊組</label>
-            <label class="unit-option"><input type="checkbox" name="unit" value="資訊組">資訊組</label>
-            <label class="unit-option"><input type="checkbox" name="unit" value="設備組">設備組</label>
+
+
+        <div class="row">
+          <div class="field">
+            <label for="office">業務單位</label>
+            <select id="office">
+              <option value="教務處">教務處</option>
+              <option value="學務處">學務處</option>
+              <option value="輔導室">輔導室</option>
+              <option value="總務處">總務處</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="unitGroup">承辦組別 / 職稱</label>
+            <select id="unitGroup"></select>
           </div>
         </div>
 
@@ -826,6 +793,29 @@
       document.getElementById("serial").value = serialNumber(getCounter());
     }
 
+    const departments = {
+      "教務處": ["教務主任", "教學組", "註冊組", "資訊組", "設備組"],
+      "學務處": ["學務主任", "生教組", "訓育組", "衛生組", "體育組", "午餐秘書"],
+      "輔導室": ["輔導主任", "資料組", "輔導組", "特教組"],
+      "總務處": ["總務主任", "事務組", "文書組", "出納組"]
+    };
+
+    function updateUnitOptions() {
+      const office = document.getElementById("office");
+      const unitGroup = document.getElementById("unitGroup");
+      if (!office || !unitGroup) return;
+
+      const selected = unitGroup.value;
+      const options = departments[office.value] || [];
+      unitGroup.innerHTML = options
+        .map(item => `<option value="${item}">${item}</option>`)
+        .join("");
+
+      if (options.includes(selected)) {
+        unitGroup.value = selected;
+      }
+    }
+
     const copies = [
       { name: "業務單位", footer: "本通知單由業務單位留存。" },
       { name: "導師", footer: "本通知單請送導師留存。" },
@@ -833,7 +823,7 @@
     ];
 
     const fields = [
-      "teacher", "docNo", "grade", "classNo", "seatNo", "student",
+      "teacher", "docNo", "office", "unitGroup", "grade", "classNo", "seatNo", "student",
       "startDate", "startTime", "endDate", "endTime", "reason"
     ];
 
@@ -882,15 +872,18 @@
     }
 
     function unitTags() {
-      return [...document.querySelectorAll('input[name="unit"]')]
-        .map(box => `<span class="unit-tag ${box.checked ? "on" : ""}">${box.value}</span>`)
-        .join("");
+      const office = escapeHtml(raw("office"));
+      const unitGroup = escapeHtml(raw("unitGroup"));
+      const text = office && unitGroup ? `${office}－${unitGroup}` : (office || unitGroup || "—");
+      return `<span class="unit-tag on">${text}</span>`;
     }
 
     function noticeHtml(copy) {
       const serial = raw("serial");
       const teacher = raw("teacher");
       const docNo = raw("docNo");
+      const office = raw("office");
+      const unitGroup = raw("unitGroup");
       const grade = raw("grade");
       const classNo = raw("classNo");
       const seatNo = raw("seatNo");
@@ -982,14 +975,16 @@
     }
 
     function selectedUnitsText() {
-      return [...document.querySelectorAll('input[name="unit"]:checked')]
-        .map(box => box.value)
-        .join("、");
+      const office = raw("office");
+      const unitGroup = raw("unitGroup");
+      return office && unitGroup ? `${office}-${unitGroup}` : (office || unitGroup || "");
     }
 
     function collectFormData() {
       return {
         serial: raw("serial"),
+        office: raw("office"),
+        unitGroup: raw("unitGroup"),
         unit: selectedUnitsText(),
         teacher: raw("teacher"),
         docNo: raw("docNo"),
@@ -1093,9 +1088,12 @@
       document.getElementById(id).addEventListener("change", render);
     });
 
-    document.querySelectorAll('input[name="unit"]').forEach(el => {
-      el.addEventListener("change", render);
+    document.getElementById("office").addEventListener("change", () => {
+      updateUnitOptions();
+      render();
     });
+
+    document.getElementById("unitGroup").addEventListener("change", render);
 
     document.getElementById("nextSerialBtn").addEventListener("click", () => {
       setCounter(getCounter() + 1);
@@ -1135,10 +1133,15 @@
       fields.forEach(id => document.getElementById(id).value = "");
       document.getElementById("grade").value = "7";
       document.getElementById("classNo").value = "1";
-      document.querySelectorAll('input[name="unit"]').forEach(el => el.checked = false);
+      document.getElementById("office").value = "教務處";
+      updateUnitOptions();
+      document.getElementById("unitGroup").value = "教務主任";
       render();
     });
 
+    document.getElementById("office").value = "教務處";
+    updateUnitOptions();
+    document.getElementById("unitGroup").value = "教務主任";
     document.getElementById("grade").value = "7";
     document.getElementById("classNo").value = "1";
     initSerial();
