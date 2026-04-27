@@ -82,6 +82,35 @@
       line-height: 1.5;
     }
 
+    .guide-box {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #bfdbfe;
+      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+      color: #1e3a8a;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .guide-title {
+      font-weight: 900;
+      font-size: 16px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .guide-box ol {
+      margin: 6px 0 0 22px;
+      padding: 0;
+    }
+
+    .guide-box li {
+      margin: 3px 0;
+    }
+
     .field { margin: 12px 0; }
 
     label {
@@ -328,23 +357,21 @@
       background: #fff;
       padding: 10mm;
       box-shadow: 0 16px 38px rgba(16, 24, 40, .18);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 6mm;
+      display: block;
     }
 
     .notice {
       border: 2px solid var(--line);
       border-radius: 8px;
       padding: 5mm 6mm 4mm;
-      margin: 0;
+      margin: 0 0 7mm;
       break-inside: avoid;
-      flex: 1 1 0;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      display: block;
+      overflow: visible;
+    }
+
+    .notice:last-child {
+      margin-bottom: 0;
     }
 
     .notice-head {
@@ -360,9 +387,10 @@
     .title {
       font-size: 25px;
       font-weight: 900;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: .5px;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: keep-all;
     }
 
     .serial {
@@ -383,11 +411,12 @@
     .notice-table td {
       border: 1.5px solid var(--line);
       padding: 2.2mm 2.6mm;
-      min-height: 14mm;
       vertical-align: middle;
       font-size: 18px;
       font-weight: 700;
+      line-height: 1.35;
       overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .notice-table th {
@@ -550,7 +579,7 @@
       }
       .notice {
         margin: 0;
-        padding: 4mm 4.5mm 3.5mm;
+        padding: 3.2mm 4mm 2.8mm;
         flex: 1 1 0;
         min-height: 0;
         max-height: calc((277mm - 12mm) / 3);
@@ -566,8 +595,10 @@
         margin-bottom: 2mm;
       }
       .title {
-        font-size: 23px;
-        letter-spacing: 0.6px;
+        font-size: 20px;
+        letter-spacing: 0.2px;
+        line-height: 1.15;
+        white-space: nowrap;
       }
       .serial {
         font-size: 14px;
@@ -578,10 +609,10 @@
       }
       .notice-table th,
       .notice-table td {
-        padding: 1.55mm 2.2mm;
-        font-size: 16.5px;
-        line-height: 1.28;
-        min-height: 9.7mm;
+        padding: 1.15mm 1.8mm;
+        font-size: 15px;
+        line-height: 1.2;
+        min-height: 8.4mm;
         border: 1.4px solid #000;
       }
       .notice-table th {
@@ -591,17 +622,17 @@
         letter-spacing: 0.5px;
       }
       .value {
-        font-size: 17px;
-        letter-spacing: 0.4px;
+        font-size: 15px;
+        letter-spacing: 0.2px;
       }
       .unit-tag {
         font-size: 14.5px;
         letter-spacing: 0.2px;
       }
       .footer {
-        font-size: 15.5px;
-        line-height: 1.35;
-        margin-top: 2mm;
+        font-size: 13.5px;
+        line-height: 1.25;
+        margin-top: 1.4mm;
         letter-spacing: 0.3px;
       }
       * {
@@ -621,6 +652,17 @@
 
       <div class="panel-body">
         <p class="sub">填寫資料後會即時產生右側 A4 一頁預覽。</p>
+
+        <div class="guide-box">
+          <div class="guide-title">📌 填單說明</div>
+          <ol>
+            <li>確認編號是否正確；編號會自動產生，可按「下一號」遞增。</li>
+            <li>勾選申請單位，填入負責教師、依據文號、年級、班級、學生姓名與座號。</li>
+            <li>選擇公假開始與結束日期時間，並填寫事由。</li>
+            <li>確認右側預覽無誤後，先按「送出資料到試算表」完成登錄。</li>
+            <li>需要紙本時，可按「直接列印」、「下載為 PDF」或「下載為 Word」。</li>
+          </ol>
+        </div>
 
         <div class="field">
           <label for="serial">編號（自動產生）</label>
@@ -930,7 +972,8 @@
 
       scaleBox.style.transform = `scale(${scale})`;
       scaleBox.style.width = `${paperWidth * scale}px`;
-      scaleBox.style.height = `${paper.scrollHeight * scale}px`;
+      const paperHeight = Math.max(paper.scrollHeight, paper.getBoundingClientRect().height / Math.max(scale, 0.01));
+      scaleBox.style.height = `${paperHeight * scale}px`;
     }
 
     function render() {
