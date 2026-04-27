@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>大道國民中學學生公假通知單</title>
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1e40af;
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --navy: #1e3a8a;
+      --ink: #111827;
+      --muted: #667085;
+      --line: #111827;
+      --soft: #f8fafc;
+      --paper-w: 210mm;
+      --paper-h: 297mm;
+      --font: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,.14), transparent 34%),
+        linear-gradient(135deg, #eef6ff 0%, #f8fafc 46%, #eef2ff 100%);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 390px 1fr;
+      gap: 22px;
+      padding: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      position: sticky;
+      top: 18px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid #dbeafe;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(30, 64, 175, .16);
+    }
+
+    .panel-header {
+      padding: 18px 20px 14px;
+      color: var(--blue-dark);
+      border-bottom: 1px solid #dbeafe;
+      background: linear-gradient(135deg, #eff6ff 0%, #fff 72%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header .icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .panel-header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: .5px;
+    }
+
+    .panel-body {
+      padding: 18px 20px 20px;
+    }
+
+    .sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .field { margin: 12px 0; }
+
+    label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 6px;
+      font-size: 15px;
+      color: #344054;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #bfd7ff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 16px;
+      font-family: var(--font);
+      background: #fff;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    input[readonly] {
+      background: #eff6ff;
+      color: var(--blue-dark);
+      font-weight: 900;
+      letter-spacing: .5px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .13);
+    }
+
+    textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .units {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .unit-option {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 9px;
+      border: 1px solid #dbeafe;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      background: #f8fbff;
+      color: #1f2937;
+    }
+
+    .unit-option input { width: auto; accent-color: var(--blue); }
+
+    .serial-tools, .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 900;
+      font-family: var(--font);
+      transition: transform .12s ease, filter .12s ease;
+    }
+
+    button:hover { transform: translateY(-1px); filter: brightness(.98); }
+    button:active { transform: translateY(0); }
+
+    .tiny {
+      flex: 1;
+      background: #eff6ff;
+      color: var(--blue-dark);
+      border: 1px solid #bfdbfe;
+      padding: 8px 10px;
+      font-size: 14px;
+    }
+
+    .print-btn {
+      width: 100%;
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, .22);
+    }
+
+    .download-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .pdf-btn {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(220, 38, 38, .18);
+    }
+
+    .word-btn {
+      background: var(--blue-dark);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(30, 64, 175, .18);
+    }
+
+    .clear-btn {
+      width: 100%;
+      margin-top: 10px;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .script-box {
+      margin: 14px 0;
+      padding: 12px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      background: #eff6ff;
+    }
+
+    .script-box label {
+      color: #1e40af;
+    }
+
+    .script-link-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      margin-bottom: 10px;
+    }
+
+    .script-link-label {
+      color: #1e40af;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .script-link {
+      color: #1d4ed8;
+      font-weight: 900;
+      text-decoration: none;
+      border-bottom: 2px solid #93c5fd;
+    }
+
+    .script-link:hover {
+      color: #1e3a8a;
+      border-bottom-color: #1d4ed8;
+    }
+
+    .save-script-btn {
+      width: 100%;
+      margin-top: 10px;
+      background: #16a34a;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(22, 163, 74, .18);
+    }
+
+    .status {
+      margin-top: 10px;
+      min-height: 20px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #475569;
+    }
+
+    .status.ok { color: #15803d; font-weight: 800; }
+    .status.err { color: #b91c1c; font-weight: 800; }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 12px 0 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .preview-wrap {
+      overflow: auto;
+      padding-bottom: 24px;
+    }
+
+    .preview-card {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .preview-scale {
+      transform-origin: top center;
+      transition: transform .18s ease;
+    }
+
+    .preview-toolbar {
+      display: none;
+      gap: 8px;
+      margin-bottom: 10px;
+      justify-content: center;
+      position: sticky;
+      top: 8px;
+      z-index: 5;
+    }
+
+    .preview-toolbar button {
+      padding: 8px 10px;
+      font-size: 14px;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, .12);
+    }
+
+    .paper {
+      width: var(--paper-w);
+      min-height: var(--paper-h);
+      margin: 0 auto;
+      background: #fff;
+      padding: 10mm;
+      box-shadow: 0 16px 38px rgba(16, 24, 40, .18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6mm;
+    }
+
+    .notice {
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 5mm 6mm 4mm;
+      margin: 0;
+      break-inside: avoid;
+      flex: 1 1 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .notice-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: end;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 3mm;
+      margin-bottom: 3.5mm;
+    }
+
+    .title {
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: .5px;
+      white-space: nowrap;
+    }
+
+    .serial {
+      color: #475467;
+      font-size: 16px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    table.notice-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border: 1.8px solid var(--line);
+    }
+
+    .notice-table th,
+    .notice-table td {
+      border: 1.5px solid var(--line);
+      padding: 2.2mm 2.6mm;
+      min-height: 14mm;
+      vertical-align: middle;
+      font-size: 18px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .notice-table th {
+      width: 25mm;
+      background: #f8fafc;
+      font-weight: 900;
+      font-size: 16px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .notice-table .unit-cell {
+      min-height: 14mm;
+    }
+
+    .label {
+      font-weight: 900;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .value {
+      font-size: 19px;
+      font-weight: 700;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .value.empty {
+      color: #98a2b3;
+      font-weight: 500;
+    }
+
+    .unit-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      align-items: center;
+    }
+
+    .unit-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .unit-tag::before { content: "☐"; font-size: 15px; }
+    .unit-tag.on::before { content: "☑"; }
+
+    .footer {
+      margin-top: 3.5mm;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    @media (max-width: 1200px) {
+      .app {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+      .panel {
+        position: static;
+      }
+      .preview-toolbar {
+        display: flex;
+      }
+      .preview-wrap {
+        overflow: hidden;
+        padding-bottom: 16px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 10px;
+        gap: 14px;
+      }
+      .panel {
+        border-radius: 16px;
+      }
+      .panel-header {
+        padding: 14px 16px 12px;
+      }
+      .panel-header h1 {
+        font-size: 21px;
+      }
+      .panel-body {
+        padding: 14px 16px 16px;
+      }
+      .row,
+      .download-row {
+        grid-template-columns: 1fr;
+      }
+      .units {
+        grid-template-columns: 1fr;
+      }
+      input, select, textarea {
+        font-size: 16px;
+        min-height: 44px;
+      }
+      button {
+        min-height: 44px;
+      }
+      .serial-tools {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 8px;
+      }
+      .preview-toolbar {
+        position: static;
+        flex-wrap: wrap;
+      }
+      .hint {
+        font-size: 12px;
+      }
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+      }
+      .app { display: block; padding: 0; }
+      .panel,
+      .preview-toolbar { display: none; }
+      .preview-wrap { padding: 0; overflow: visible; }
+      .preview-card { display: block; }
+      .preview-scale { transform: none !important; }
+      .paper {
+        width: 190mm;
+        height: 277mm;
+        min-height: 277mm;
+        max-height: 277mm;
+        margin: 0 auto;
+        padding: 0;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 6mm;
+        overflow: hidden;
+        page-break-after: avoid;
+      }
+      .notice {
+        margin: 0;
+        padding: 4mm 4.5mm 3.5mm;
+        flex: 1 1 0;
+        min-height: 0;
+        max-height: calc((277mm - 12mm) / 3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .notice-head {
+        padding-bottom: 2mm;
+        margin-bottom: 2mm;
+      }
+      .title {
+        font-size: 23px;
+        letter-spacing: 0.6px;
+      }
+      .serial {
+        font-size: 14px;
+        letter-spacing: 0.2px;
+      }
+      .notice-table {
+        height: auto;
+      }
+      .notice-table th,
+      .notice-table td {
+        padding: 1.55mm 2.2mm;
+        font-size: 16.5px;
+        line-height: 1.28;
+        min-height: 9.7mm;
+        border: 1.4px solid #000;
+      }
+      .notice-table th {
+        font-size: 15.5px;
+        width: 23mm;
+        background: #fff;
+        letter-spacing: 0.5px;
+      }
+      .value {
+        font-size: 17px;
+        letter-spacing: 0.4px;
+      }
+      .unit-tag {
+        font-size: 14.5px;
+        letter-spacing: 0.2px;
+      }
+      .footer {
+        font-size: 15.5px;
+        line-height: 1.35;
+        margin-top: 2mm;
+        letter-spacing: 0.3px;
+      }
+      * {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="panel" aria-label="輸入資料">
+      <div class="panel-header">
+        <span class="icon">📝</span>
+        <h1>輸入資料</h1>
+      </div>
+
+      <div class="panel-body">
+        <p class="sub">填寫資料後會即時產生右側 A4 一頁預覽。</p>
+
+        <div class="field">
+          <label for="serial">編號（自動產生）</label>
+          <input id="serial" readonly />
+          <div class="serial-tools">
+            <button class="tiny" type="button" id="nextSerialBtn">下一號</button>
+            <button class="tiny" type="button" id="resetSerialBtn">重設流水號</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>單位</label>
+          <div class="units">
+            <label class="unit-option"><input type="checkbox" name="unit" value="教務主任">教務主任</label>
+            <label class="unit-option"><input type="checkbox" name="unit" value="教學組">教學組</label>
+            <label class="unit-option"><input type="checkbox" name="unit" value="註冊組">註冊組</label>
+            <label class="unit-option"><input type="checkbox" name="unit" value="資訊組">資訊組</label>
+            <label class="unit-option"><input type="checkbox" name="unit" value="設備組">設備組</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="teacher">負責教師</label>
+          <input id="teacher" placeholder="請輸入負責教師" />
+        </div>
+
+        <div class="field">
+          <label for="docNo">依據文號</label>
+          <input id="docNo" placeholder="例如：府教學字第1150000000號" />
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="grade">年級</label>
+            <select id="grade">
+              <option value="7">7 年級</option>
+              <option value="8">8 年級</option>
+              <option value="9">9 年級</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="classNo">班級</label>
+            <select id="classNo">
+              <option value="1">1 班</option>
+              <option value="2">2 班</option>
+              <option value="3">3 班</option>
+              <option value="4">4 班</option>
+              <option value="5">5 班</option>
+              <option value="6">6 班</option>
+              <option value="7">7 班</option>
+              <option value="8">8 班</option>
+              <option value="9">9 班</option>
+              <option value="10">10 班</option>
+              <option value="11">11 班</option>
+              <option value="12">12 班</option>
+              <option value="13">13 班</option>
+              <option value="14">14 班</option>
+              <option value="15">15 班</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="seatNo">座號</label>
+            <input id="seatNo" type="number" min="1" max="99" placeholder="例如：12" />
+          </div>
+          <div class="field">
+            <label for="student">學生姓名</label>
+            <input id="student" placeholder="請輸入姓名" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="startDate">開始日期</label>
+            <input id="startDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="startTime">開始時間</label>
+            <input id="startTime" type="time" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="endDate">結束日期</label>
+            <input id="endDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="endTime">結束時間</label>
+            <input id="endTime" type="time" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reason">事由</label>
+          <textarea id="reason" placeholder="請輸入公假事由"></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="print-btn" type="button" id="printBtn">🖨️ 直接列印</button>
+        </div>
+
+        <div class="download-row">
+          <button class="pdf-btn" type="button" id="pdfBtn">📄 下載為 PDF</button>
+          <button class="word-btn" type="button" id="wordBtn">📝 下載為 Word</button>
+        </div>
+
+        <div class="script-box">
+          <div class="script-link-row">
+            <span class="script-link-label">資料查詢</span>
+            <a class="script-link" href="https://script.google.com/macros/s/AKfycbzXJ7JM3sw8Pu5-QaWdzXsz3HtYzdwTQ18EJ66cL1AMRFF-BOR2g01qmaJ4pcDjlYzn/exec" target="_blank" rel="noopener noreferrer">已申請公假一覽</a>
+          </div>
+          <button class="save-script-btn" type="button" id="sendScriptBtn">✅ 送出資料到試算表</button>
+          <div class="status" id="saveStatus"></div>
+        </div>
+
+        <button class="clear-btn" type="button" id="clearBtn">清空資料</button>
+
+        <p class="hint">已隱藏 Google Apps Script 網址，填寫者可直接送出資料；可點選「已申請公假一覽」查看已送出的資料。預覽版面支援桌機、平板、手機。</p>
+      </div>
+    </section>
+
+    <section class="preview-wrap" aria-label="通知單預覽">
+      <div class="preview-toolbar" aria-label="預覽縮放工具">
+        <button type="button" id="fitPreviewBtn">符合螢幕</button>
+        <button type="button" id="actualPreviewBtn">100%</button>
+      </div>
+      <div class="preview-card">
+        <div class="preview-scale" id="previewScale">
+          <article class="paper" id="paper"></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SERIAL_KEY = "dadao_public_leave_serial_counter";
+
+    function rocYear() {
+      return new Date().getFullYear() - 1911;
+    }
+
+    function serialNumber(counter) {
+      return `${rocYear()}-${String(counter).padStart(3, "0")}`;
+    }
+
+    function getCounter() {
+      const saved = Number(localStorage.getItem(SERIAL_KEY));
+      return Number.isInteger(saved) && saved >= 0 ? saved : 0;
+    }
+
+    function setCounter(counter) {
+      localStorage.setItem(SERIAL_KEY, String(counter));
+      document.getElementById("serial").value = serialNumber(counter);
+      render();
+    }
+
+    function initSerial() {
+      document.getElementById("serial").value = serialNumber(getCounter());
+    }
+
+    const copies = [
+      { name: "業務單位", footer: "本通知單由業務單位留存。" },
+      { name: "導師", footer: "本通知單請送導師留存。" },
+      { name: "班級點名簿", footer: "本通知單請送各班，請副班長張貼在點名表讓授課教師知悉。" }
+    ];
+
+    const fields = [
+      "teacher", "docNo", "grade", "classNo", "seatNo", "student",
+      "startDate", "startTime", "endDate", "endTime", "reason"
+    ];
+
+    const pad = n => String(n).padStart(2, "0");
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function raw(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function show(text) {
+      const safe = escapeHtml(text || "");
+      return safe ? `<span class="value">${safe}</span>` : `<span class="value empty">—</span>`;
+    }
+
+    function showPlain(text) {
+      const safe = escapeHtml(text || "");
+      return safe ? `<span class="value">${safe}</span>` : `<span class="value empty">—</span>`;
+    }
+
+    function dateText(value) {
+      if (!value) return "";
+      const d = new Date(value + "T00:00:00");
+      return `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())}`;
+    }
+
+    function timeText(value) {
+      if (!value) return "";
+      const [h, m] = value.split(":");
+      return `${h}:${m}`;
+    }
+
+    function dateTimeText(dateValue, timeValue) {
+      const d = dateText(dateValue);
+      const t = timeText(timeValue);
+      if (d && t) return `${d} ${t}`;
+      return d || t || "";
+    }
+
+    function unitTags() {
+      return [...document.querySelectorAll('input[name="unit"]')]
+        .map(box => `<span class="unit-tag ${box.checked ? "on" : ""}">${box.value}</span>`)
+        .join("");
+    }
+
+    function noticeHtml(copy) {
+      const serial = raw("serial");
+      const teacher = raw("teacher");
+      const docNo = raw("docNo");
+      const grade = raw("grade");
+      const classNo = raw("classNo");
+      const seatNo = raw("seatNo");
+      const student = raw("student");
+      const start = dateTimeText(raw("startDate"), raw("startTime"));
+      const end = dateTimeText(raw("endDate"), raw("endTime"));
+      const reason = raw("reason");
+
+      return `
+        <section class="notice">
+          <div class="notice-head">
+            <div class="title">大道國民中學學生公假通知單-${copy.name}</div>
+            <div class="serial">編號：${serial ? escapeHtml(serial) : "—"}</div>
+          </div>
+
+          <table class="notice-table">
+            <colgroup>
+              <col style="width: 23%">
+              <col style="width: 27%">
+              <col style="width: 23%">
+              <col style="width: 27%">
+            </colgroup>
+            <tr>
+              <th>單位</th>
+              <td colspan="3" class="unit-cell"><span class="value unit-list">${unitTags()}</span></td>
+            </tr>
+            <tr>
+              <th>負責教師</th>
+              <td>${showPlain(teacher)}</td>
+              <th>班級</th>
+              <td>${showPlain(`${grade} 年 ${classNo} 班`)}</td>
+            </tr>
+            <tr>
+              <th>學生姓名</th>
+              <td>${showPlain(student)}</td>
+              <th>座號</th>
+              <td>${showPlain(seatNo)}</td>
+            </tr>
+            <tr>
+              <th>開始時間</th>
+              <td>${showPlain(start)}</td>
+              <th>結束時間</th>
+              <td>${showPlain(end)}</td>
+            </tr>
+            <tr>
+              <th>事由</th>
+              <td colspan="3">${showPlain(reason)}</td>
+            </tr>
+            <tr>
+              <th>依據文號</th>
+              <td colspan="3">${showPlain(docNo)}</td>
+            </tr>
+          </table>
+
+          <div class="footer">${copy.footer}</div>
+        </section>
+      `;
+    }
+
+    let manualPreviewScale = null;
+
+    function updatePreviewScale() {
+      const wrap = document.querySelector(".preview-wrap");
+      const scaleBox = document.getElementById("previewScale");
+      const paper = document.getElementById("paper");
+      if (!wrap || !scaleBox || !paper) return;
+
+      if (window.matchMedia("print").matches) {
+        scaleBox.style.transform = "none";
+        scaleBox.style.width = "";
+        scaleBox.style.height = "";
+        return;
+      }
+
+      const paperWidth = paper.offsetWidth || 794;
+      const available = Math.max(260, wrap.clientWidth - 8);
+      const fitScale = Math.min(1, available / paperWidth);
+      const scale = manualPreviewScale ?? fitScale;
+
+      scaleBox.style.transform = `scale(${scale})`;
+      scaleBox.style.width = `${paperWidth * scale}px`;
+      scaleBox.style.height = `${paper.scrollHeight * scale}px`;
+    }
+
+    function render() {
+      document.getElementById("paper").innerHTML = copies.map(noticeHtml).join("");
+      requestAnimationFrame(updatePreviewScale);
+    }
+
+    function selectedUnitsText() {
+      return [...document.querySelectorAll('input[name="unit"]:checked')]
+        .map(box => box.value)
+        .join("、");
+    }
+
+    function collectFormData() {
+      return {
+        serial: raw("serial"),
+        unit: selectedUnitsText(),
+        teacher: raw("teacher"),
+        docNo: raw("docNo"),
+        grade: raw("grade"),
+        classNo: raw("classNo"),
+        seatNo: raw("seatNo"),
+        student: raw("student"),
+        startDate: raw("startDate"),
+        startTime: raw("startTime"),
+        endDate: raw("endDate"),
+        endTime: raw("endTime"),
+        reason: raw("reason"),
+        submittedAt: new Date().toISOString()
+      };
+    }
+
+    async function sendToAppsScript() {
+      const status = document.getElementById("saveStatus");
+      const url = "https://script.google.com/macros/s/AKfycbzXJ7JM3sw8Pu5-QaWdzXsz3HtYzdwTQ18EJ66cL1AMRFF-BOR2g01qmaJ4pcDjlYzn/exec";
+
+      const data = collectFormData();
+      if (!data.student && !data.reason) {
+        status.textContent = "請至少輸入學生姓名或事由後再送出。";
+        status.className = "status err";
+        return;
+      }
+
+      status.textContent = "送出中……";
+      status.className = "status";
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(data)
+        });
+
+        status.textContent = "已送出到 Apps Script。若試算表沒有資料，請確認 Web App 權限設定。";
+        status.className = "status ok";
+      } catch (error) {
+        status.textContent = "送出失敗，請檢查 Apps Script URL 或網路連線。";
+        status.className = "status err";
+      }
+    }
+
+    function printPage() {
+      render();
+      window.print();
+    }
+
+    function downloadWord() {
+      render();
+      const serial = raw("serial") || "通知單";
+      const styles = document.querySelector("style").innerHTML;
+      const content = document.getElementById("paper").outerHTML;
+      const doc = `
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              ${styles}
+              body { background: #fff; }
+              .paper {
+                width: 190mm;
+                min-height: 277mm;
+                box-shadow: none;
+                margin: 0 auto;
+              }
+              table.notice-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 2px solid #000;
+                mso-border-alt: solid #000 1.5pt;
+              }
+              table.notice-table th,
+              table.notice-table td {
+                border: 1.5px solid #000;
+                mso-border-alt: solid #000 1.0pt;
+                padding: 6px 8px;
+              }
+            </style>
+          </head>
+          <body>${content}</body>
+        </html>
+      `;
+      const blob = new Blob(["\ufeff", doc], { type: "application/msword;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `大道國民中學學生公假通知單_${serial}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    fields.forEach(id => {
+      document.getElementById(id).addEventListener("input", render);
+      document.getElementById(id).addEventListener("change", render);
+    });
+
+    document.querySelectorAll('input[name="unit"]').forEach(el => {
+      el.addEventListener("change", render);
+    });
+
+    document.getElementById("nextSerialBtn").addEventListener("click", () => {
+      setCounter(getCounter() + 1);
+    });
+
+    document.getElementById("resetSerialBtn").addEventListener("click", () => {
+      const input = prompt("請輸入新的流水號（例如 0、1、25）：", String(getCounter()));
+      if (input === null) return;
+      const next = Number(input);
+      if (!Number.isInteger(next) || next < 0 || next > 999) {
+        alert("請輸入 0 到 999 之間的整數。");
+        return;
+      }
+      setCounter(next);
+    });
+
+    document.getElementById("printBtn").addEventListener("click", printPage);
+    document.getElementById("pdfBtn").addEventListener("click", printPage);
+    document.getElementById("wordBtn").addEventListener("click", downloadWord);
+    document.getElementById("sendScriptBtn").addEventListener("click", sendToAppsScript);
+
+
+    document.getElementById("fitPreviewBtn").addEventListener("click", () => {
+      manualPreviewScale = null;
+      updatePreviewScale();
+    });
+
+    document.getElementById("actualPreviewBtn").addEventListener("click", () => {
+      manualPreviewScale = 1;
+      updatePreviewScale();
+    });
+
+    window.addEventListener("resize", updatePreviewScale);
+    window.addEventListener("orientationchange", () => setTimeout(updatePreviewScale, 250));
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      fields.forEach(id => document.getElementById(id).value = "");
+      document.getElementById("grade").value = "7";
+      document.getElementById("classNo").value = "1";
+      document.querySelectorAll('input[name="unit"]').forEach(el => el.checked = false);
+      render();
+    });
+
+    document.getElementById("grade").value = "7";
+    document.getElementById("classNo").value = "1";
+    initSerial();
+    render();
+  </script>
+</body>
+</html>
