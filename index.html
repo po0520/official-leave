@@ -421,6 +421,19 @@
       font-weight: 500;
     }
 
+    .student-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      line-height: 1.45;
+    }
+
+    .student-chip {
+      display: inline-block;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
     .unit-list {
       display: flex;
       flex-wrap: wrap;
@@ -692,15 +705,12 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="field">
-            <label for="seatNo">座號</label>
-            <input id="seatNo" type="number" min="1" max="99" placeholder="例如：12" />
-          </div>
-          <div class="field">
-            <label for="student">學生姓名</label>
-            <input id="student" placeholder="請輸入姓名" />
-          </div>
+        <div class="field">
+          <label for="students">學生名單（同一班可一次輸入多位）</label>
+          <textarea id="students" placeholder="每行一位，例如：
+01 王小明
+02 李小華
+15 陳大安"></textarea>
         </div>
 
         <div class="row">
@@ -823,7 +833,7 @@
     ];
 
     const fields = [
-      "teacher", "docNo", "office", "unitGroup", "grade", "classNo", "seatNo", "student",
+      "teacher", "docNo", "office", "unitGroup", "grade", "classNo", "students",
       "startDate", "startTime", "endDate", "endTime", "reason"
     ];
 
@@ -850,6 +860,51 @@
     function showPlain(text) {
       const safe = escapeHtml(text || "");
       return safe ? `<span class="value">${safe}</span>` : `<span class="value empty">—</span>`;
+    }
+
+    function parseStudents() {
+      const text = raw("students");
+      return text
+        .split(/\n+/)
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+          const match = line.match(/^(\d{1,2})[\s　,，.．、-]+(.+)$/);
+          if (match) {
+            return {
+              seatNo: match[1].padStart(2, "0"),
+              name: match[2].trim()
+            };
+          }
+          return {
+            seatNo: "",
+            name: line
+          };
+        });
+    }
+
+    function studentsDisplayHtml() {
+      const list = parseStudents();
+      if (!list.length) return `<span class="value empty">—</span>`;
+
+      return `<div class="student-list">` + list.map(item => {
+        const seat = item.seatNo ? `${escapeHtml(item.seatNo)}　` : "";
+        return `<span class="student-chip">${seat}${escapeHtml(item.name)}</span>`;
+      }).join("") + `</div>`;
+    }
+
+    function studentNamesText() {
+      return parseStudents().map(item => item.name).join("、");
+    }
+
+    function seatNosText() {
+      return parseStudents().map(item => item.seatNo).filter(Boolean).join("、");
+    }
+
+    function studentsText() {
+      return parseStudents()
+        .map(item => item.seatNo ? `${item.seatNo} ${item.name}` : item.name)
+        .join("\n");
     }
 
     function dateText(value) {
@@ -886,8 +941,6 @@
       const unitGroup = raw("unitGroup");
       const grade = raw("grade");
       const classNo = raw("classNo");
-      const seatNo = raw("seatNo");
-      const student = raw("student");
       const start = dateTimeText(raw("startDate"), raw("startTime"));
       const end = dateTimeText(raw("endDate"), raw("endTime"));
       const reason = raw("reason");
@@ -917,10 +970,8 @@
               <td>${showPlain(`${grade} 年 ${classNo} 班`)}</td>
             </tr>
             <tr>
-              <th>學生姓名</th>
-              <td>${showPlain(student)}</td>
-              <th>座號</th>
-              <td>${showPlain(seatNo)}</td>
+              <th>學生名單</th>
+              <td colspan="3">${studentsDisplayHtml()}</td>
             </tr>
             <tr>
               <th>開始時間</th>
@@ -990,8 +1041,10 @@
         docNo: raw("docNo"),
         grade: raw("grade"),
         classNo: raw("classNo"),
-        seatNo: raw("seatNo"),
-        student: raw("student"),
+        seatNo: seatNosText(),
+        student: studentNamesText(),
+        students: parseStudents(),
+        studentList: studentsText(),
         startDate: raw("startDate"),
         startTime: raw("startTime"),
         endDate: raw("endDate"),
@@ -1007,7 +1060,7 @@
 
       const data = collectFormData();
       if (!data.student && !data.reason) {
-        status.textContent = "請至少輸入學生姓名或事由後再送出。";
+        status.textContent = "請至少輸入學生名單或事由後再送出。";
         status.className = "status err";
         return;
       }
@@ -1066,6 +1119,15 @@
                 border: 1.5px solid #000;
                 mso-border-alt: solid #000 1.0pt;
                 padding: 6px 8px;
+              }
+              .student-list {
+                display: block;
+                line-height: 1.5;
+              }
+              .student-chip {
+                display: inline-block;
+                margin-right: 12px;
+                white-space: nowrap;
               }
             </style>
           </head>
